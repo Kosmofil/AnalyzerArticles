@@ -7,7 +7,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
+
+import static java.util.stream.IntStream.rangeClosed;
 
 public class Main {
 
@@ -15,39 +16,38 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Main text = new Main();
-        text.get();
+        Main.get();
 
     }
 
-    public void get() throws IOException {
-
-        List<Document> pages = new ArrayList<>();
+    public static void get() throws IOException {
         // TODO: 22.02.17 разобраться заменить forEach
-        IntStream.range(1, 3).forEach((i) -> {
-            try {
-                pages.add(Jsoup.connect("https://habrahabr.ru/top/alltime/" + "page" + i).userAgent("Mozilla").get());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
         // TODO: 22.02.17 переделать метод по совету NS (без интернета!)
 
-        //Elements element = doc.select(".shortcuts_item");//    List<Element> element = doc.select(".shortcuts_item");
+        List<Document> documents = new ArrayList<>();
+        final String url = "https://habrahabr.ru/top/alltime/";
+                rangeClosed(0,3).forEach(i ->{
+                    try {
+                        documents.add(Jsoup.connect(url + "page" + i).userAgent("Mozilla").get());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                });
 
-        List<Elements> row = pages.stream()
-                .map((q) -> q.select(".shortcuts_item"))
-                .collect(Collectors.toList());
+                Collection<String> row = documents.stream()
+                        .map(i->i.select(".post__title_link"))
+                        .map(w->w.outerHtml())//далее проход по ссылкам и обработка текста.
+                        .collect(Collectors.toList());
 
-        List<String> title = row.stream()
-                .map((s) -> getNewText(s, "a[class=post__title_link]"))
-                .collect(Collectors.toList());
+    }
 
-        // TODO: 21.02.17 продумать вход в каждую статью 
-        List<String> text = row.stream()
-                .map((s) -> getNewText(s, "div[class=content html_format]"))
-                .collect(Collectors.toList());
 
+
+    private static List<Elements> getPost(String cssQuery){
+
+        List<Elements> list = new ArrayList<>();
+        list.stream().map(i->i.select(cssQuery));
+        return list;
     }
 
     private static String getNewText(Elements element, String cssQuery) {//получаем текст
