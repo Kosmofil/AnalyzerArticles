@@ -16,11 +16,11 @@ public class Main {
 
     public static void main(String[] args) throws IOException {
 
-        Main.get();
+        Main.startAnalyz();
 
     }
 
-    public static void get() throws IOException {
+    public static void startAnalyz() throws IOException {
 
         List<Document> documents = new ArrayList<>();
         final String url = "https://habrahabr.ru/top/alltime/";
