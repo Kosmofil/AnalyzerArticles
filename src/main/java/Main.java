@@ -17,14 +17,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         Main.startAnalyz();
-
     }
 
     public static void startAnalyz() throws IOException {
 
         List<Document> documents = new ArrayList<>();
         final String url = "https://habrahabr.ru/top/alltime/";
-        rangeClosed(0, 1).forEach(i -> {
+        rangeClosed(0, 2).forEach(i -> {
             try {
                 documents.add(Jsoup.connect(url + "page" + i).userAgent("Mozilla").get());
             } catch (IOException e) {
@@ -44,11 +43,9 @@ public class Main {
                     }
                     return null;//убрать нул
                 })
-                .map(z -> getNewText(z, "div[class=post__body post__body_full]"))
-                // TODO: 28.02.17 нужен метод красиво обрабатывающий текст
+                .map(z -> getNewText(z, "div[class=post__body post__body_full]"))//получаем текст статей
                 .collect(Collectors.toList());
 
-        // TODO: 28.02.17 сделать метод выводящий статистику
 
     }
 
@@ -67,9 +64,4 @@ public class Main {
         return null;//null продумать
     }
 
-    //тестовый метод не забыть убрать
-    public static void showAll(Collection<EntryData> saver) {
-        List<EntryData> select = saver.stream().filter((s) -> s.getTitle() != null).collect(Collectors.toList());
-        System.out.println(select);
-    }
 }
