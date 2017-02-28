@@ -46,9 +46,7 @@ public class Main {
                 .map(z -> getNewText(z, "div[class=post__body post__body_full]"))//получаем текст статей
                 .collect(Collectors.toList());
 
-
     }
-
 
     private static List<Elements> getPost(String cssQuery) {
         List<Elements> list = new ArrayList<>();
@@ -63,5 +61,4 @@ public class Main {
         }
         return null;//null продумать
     }
-
 }
