@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import static java.util.stream.IntStream.rangeClosed;
 
-
 public class Main {
 
     public static void main(String[] args) throws IOException {
