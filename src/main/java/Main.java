@@ -18,6 +18,7 @@ public class Main {
         Main.startAnalysis();
         double result = (System.currentTimeMillis() - startTime) / 1000;
         System.out.println(result + "seconds" + " or " + result / 60 + " minuts");
+
     }
 
 
@@ -31,8 +32,8 @@ public class Main {
     private static void startAnalysis() throws IOException {
 
         List<Document> documents = new ArrayList<>();
-        final String url = "https://habrahabr.ru/top/alltime/";
-        rangeClosed(0, 100).forEach(i -> {
+        final String url = "https://habr.com/en/top/alltime/";
+        rangeClosed(1, 50).forEach(i -> {
             documents.add(getElements(url + "page" + i).get());
         });
         Collection<String> articleText = documents.stream()//получили весь текст со статей
