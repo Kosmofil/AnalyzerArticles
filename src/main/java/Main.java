@@ -38,12 +38,9 @@ public class Main {
         });
         Collection<String> articleText = documents.stream()//получили весь текст со статей
                 .map(i -> i.select(".post__title_link"))//+
-                .flatMap(w -> w.stream()
-                        .map(q -> q.absUrl("href")))//получили список ссылок на каждую статью
-                .map(t -> getElements(t).get().select(".post_show"))
-                .map(z -> getTextFromElements(z, "div[class=post__body post__body_full]"))//получаем текст статей
-                .map(t -> t.toLowerCase()
-                        .replaceAll(APOSTROPHE, TRUE_APOSTROPHE)
+                .flatMap(w -> w.stream().map(q -> q.absUrl("href")))//получили список ссылок на каждую статью
+                .map(t -> getElements(t).get().select(".post_show")).map(z -> getTextFromElements(z, "div[class=post__body post__body_full]"))//получаем текст статей
+                .map(t -> t.toLowerCase().replaceAll(APOSTROPHE, TRUE_APOSTROPHE)
                         .replaceAll(ONLY_LATIN_CHARACTERS, SPACE)
                         .replaceAll(SPACES_MORE_ONE, SPACE))
                 .collect(Collectors.toList());
@@ -51,6 +48,7 @@ public class Main {
         //ниже выводим количество слов
         Map<String, Integer> countWordMaps = getWordsMap(articleText.toString());
         countWordMaps.entrySet().forEach(System.out::println);
+
 
     }
 
