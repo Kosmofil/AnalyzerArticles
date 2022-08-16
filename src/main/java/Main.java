@@ -17,7 +17,7 @@ public class Main {
         double startTime = System.currentTimeMillis();
         Main.startAnalysis();
         double result = (System.currentTimeMillis() - startTime) / 1000;
-        System.out.println(result + "seconds" + " or " + result / 60 + " minuts");
+        System.out.println(result + " seconds" + " or " + result / 60 + " minuts");
 
     }
 
@@ -37,9 +37,9 @@ public class Main {
             documents.add(getElements(url + "page" + i).get());
         });
         Collection<String> articleText = documents.stream()//получили весь текст со статей
-                .map(i -> i.select(".post__title_link"))//+
+                .map(i -> i.select(".tm-article-snippet__title-link"))//+
                 .flatMap(w -> w.stream().map(q -> q.absUrl("href")))//получили список ссылок на каждую статью
-                .map(t -> getElements(t).get().select(".post_show")).map(z -> getTextFromElements(z, "div[class=post__body post__body_full]"))//получаем текст статей
+                .map(t -> getElements(t).get().select(".tm-article-snippet__title tm-article-snippet__title_h2")).map(z -> getTextFromElements(z, "div[class=post-content-body]"))//получаем текст статей
                 .map(t -> t.toLowerCase().replaceAll(APOSTROPHE, TRUE_APOSTROPHE)
                         .replaceAll(ONLY_LATIN_CHARACTERS, SPACE)
                         .replaceAll(SPACES_MORE_ONE, SPACE))
@@ -49,6 +49,9 @@ public class Main {
         Map<String, Integer> countWordMaps = getWordsMap(articleText.toString());
         countWordMaps.entrySet().forEach(System.out::println);
 
+        countWordMaps.entrySet().forEach(entry -> {
+            System.out.println(entry.getKey() + " " + entry.getValue());
+        });
 
     }
 
